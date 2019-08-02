@@ -45,7 +45,7 @@ class METADATA(Structure):
     
 
 #lib = CDLL("/home/pjreddie/documents/darknet/libdarknet.so", RTLD_GLOBAL)
-lib = CDLL("libdarknet.so", RTLD_GLOBAL)
+lib = CDLL("/home/madhav/Desktop/Structure-Sensor/Work/Third-Party/lib/darknet/libdarknet.so", RTLD_GLOBAL)
 lib.network_width.argtypes = [c_void_p]
 lib.network_width.restype = c_int
 lib.network_height.argtypes = [c_void_p]
@@ -148,9 +148,9 @@ if __name__ == "__main__":
     #meta = load_meta("cfg/imagenet1k.data")
     #r = classify(net, meta, im)
     #print r[:10]
-    net = load_net("cfg/tiny-yolo.cfg", "tiny-yolo.weights", 0)
-    meta = load_meta("cfg/coco.data")
-    r = detect(net, meta, "data/dog.jpg")
+    net = load_net("/home/madhav/Desktop/Structure-Sensor/Work/Third-Party/lib/darknet/cfg/yolov3.cfg", "/home/madhav/Desktop/Structure-Sensor/Work/Third-Party/lib/darknet/yolov3.weights", 0)
+    meta = load_meta("/home/madhav/Desktop/Structure-Sensor/Work/Third-Party/lib/darknet/cfg/coco.data")
+    r = detect(net, meta, "/home/madhav/Desktop/Structure-Sensor/Work/Third-Party/lib/darknet/data/dog.jpg")
     print r
     
 
