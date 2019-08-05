@@ -131,8 +131,12 @@ class DarknetInference():
         res = sorted(res, key=lambda x: -x[1])
         return res
 
-    def detect(self, net, meta, image, thresh=.5, hier_thresh=.5, nms=.45):
-        im = self.load_image(image, 0, 0)
+    def detect(self, net, meta, image, thresh=.5, hier_thresh=.5, nms=.45, input_as_path=1):
+        if (input_as_path == 1):
+            im = self.load_image(image, 0, 0)
+        else:
+            im = image
+            
         num = c_int(0)
         pnum = pointer(num)
         self.predict_image(net, im)
@@ -155,12 +159,8 @@ class DarknetInference():
         self.net = self.load_net(static['darknet-root'] + static['config_path'], static['darknet-root'] + static['weights_path'], 0)
         self.meta = self.load_meta(static['darknet-root'] + static['meta_path'])
 
-    def infer(self, img, path=0):
-        if (path==0):
-            r = self.detect(self.net, self.meta, img)
-        else:
-            print "TODO: Imeplementation for numpy array"
-
+    def infer(self, img, path=0): #set path = 0 to input image as file and path=1 for numpy-arry
+        r = self.detect(self.net, self.meta, img, input_as_path=path)
         return r
 
 
