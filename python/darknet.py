@@ -2,6 +2,7 @@ from ctypes import *
 import math
 import random
 from config import static
+import sys
 
 class BOX(Structure):
     _fields_ = [("x", c_float),
@@ -29,7 +30,8 @@ class METADATA(Structure):
                 ("names", POINTER(c_char_p))]
 
 class DarknetInference():
-    """docstring for DarknetInference"""
+
+    """docstring for DarknetInference""" # TODO
     
     def __init__(self):
         #lib = CDLL("/home/pjreddie/documents/darknet/libdarknet.so", RTLD_GLOBAL)
@@ -149,16 +151,29 @@ class DarknetInference():
         self.free_detections(dets, num)
         return res
 
+    def load_stuffs(self):
+        self.net = self.load_net(static['darknet-root'] + static['config_path'], static['darknet-root'] + static['weights_path'], 0)
+        self.meta = self.load_meta(static['darknet-root'] + static['meta_path'])
+
+    def infer(self, img, path=0):
+        if (path==0):
+            r = self.detect(self.net, self.meta, img)
+        else:
+            print "TODO: Imeplementation for numpy array"
+
+        return r
+
+
+
+
     
 if __name__ == "__main__":
-    #net = load_net("cfg/densenet201.cfg", "/home/pjreddie/trained/densenet201.weights", 0)
-    #im = load_image("data/wolf.jpg", 0, 0)
-    #meta = load_meta("cfg/imagenet1k.data")
-    #r = classify(net, meta, im)
-    #print r[:10]
-    infer = DarknetInference()
-    net = infer.load_net(static['darknet-root'] + static['config_path'], static['darknet-root'] + static['weights_path'], 0)
-    meta = infer.load_meta(static['darknet-root'] + static['meta_path'])
-    r = infer.detect(net, meta, static['darknet-root'] + "data/dog.jpg")
-    print r
     
+    filename = "data/dog.jpg"
+    if (len(sys.argv[1])>0): filename = sys.argv[1]
+
+    inferer = DarknetInference()
+    inferer.load_stuffs()
+    r = inferer.infer(filename)
+
+    print r
