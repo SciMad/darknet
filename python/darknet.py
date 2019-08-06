@@ -159,8 +159,8 @@ class DarknetInference():
         self.net = self.load_net(static['darknet-root'] + static['config_path'], static['darknet-root'] + static['weights_path'], 0)
         self.meta = self.load_meta(static['darknet-root'] + static['meta_path'])
 
-    def infer(self, img, path=0): #set path = 0 to input image as file and path=1 for numpy-arry
-        r = self.detect(self.net, self.meta, img, input_as_path=path)
+    def infer(self, img, img_ispath=0): #set path = 1 to input image as file and path=0 for numpy-arry
+        r = self.detect(self.net, self.meta, img, input_as_path=img_ispath)
         return r
 
 
@@ -174,6 +174,6 @@ if __name__ == "__main__":
 
     inferer = DarknetInference()
     inferer.load_stuffs()
-    r = inferer.infer(filename)
+    r = inferer.infer(filename, img_ispath=1)
 
     print r
